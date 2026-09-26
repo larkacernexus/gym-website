@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Gallery from '@/app/components/Gallery';
 import Testimonials from '@/app/components/Testimonials';
 import MapEmbed from '@/app/components/MapEmbed';
+import FollowCommunity from '@/app/components/FollowCommunity';
 
 export default function Home() {
   const facilityTags = [
@@ -105,7 +106,7 @@ export default function Home() {
             </span>
             <span className="hidden md:inline text-sky-400">•</span>
             <span className="font-condensed text-[0.65rem] md:text-xs tracking-[0.25em] md:tracking-[0.3em] text-white/60 uppercase">
-              Q Square Building, Barok
+              Quillo Building, Valencia City
             </span>
           </div>
         </div>
@@ -271,6 +272,9 @@ export default function Home() {
           <Testimonials />
         </div>
       </section>
+
+      {/* FOLLOW THE COMMUNITY */}
+      <FollowCommunity />
 
       {/* MAP */}
       <section className="py-20 md:py-32 px-6 lg:px-16 border-t border-white/10">
