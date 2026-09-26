@@ -1,26 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --blue: #1d4ed8;
+  --blue-bright: #2563eb;
+  --blue-glow: #3b82f6;
+  --blue-deep: #1e3a8a;
+  --sky: #60a5fa;
+  --black: #0a0a0a;
+  --ink: #111111;
+  --charcoal: #171717;
+  --bone: #f4f1ec;
+  --bone-dark: #e8e4dd;
+  --white: #ffffff;
+  --muted: #a3a3a3;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--black);
+  color: var(--white);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ====== DISPLAY TYPE (America's Gym style) ====== */
+h1, h2, h3, .font-display {
+  font-family: 'Anton', 'Barlow Condensed', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  line-height: 0.92;
+}
+
+.font-condensed {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* ====== NAV ====== */
+.nav-link {
+  position: relative;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.4s ease;
+}
+.nav-link:hover { color: var(--white); }
+.nav-link.active { color: var(--sky); }
+
+/* ====== BUTTONS ====== */
+.btn-primary {
+  display: inline-block;
+  background: var(--blue-bright);
+  color: var(--white);
+  padding: 1.1rem 2.5rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid var(--blue-bright);
+  cursor: pointer;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+.btn-primary:hover {
+  background: var(--sky);
+  border-color: var(--sky);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--white);
+  padding: 1.1rem 2.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+.btn-outline:hover {
+  border-color: var(--white);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ====== LABEL / EYEBROW ====== */
+.luxe-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--sky);
+  font-weight: 600;
+}
+
+/* ====== TAG CHIP (like TURF·SAUNA·SHOWERS) ====== */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ====== TEXT EFFECTS ====== */
+.text-blue-glow {
+  color: var(--blue-bright);
+  text-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+}
+
+.text-gradient-blue {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1d4ed8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ====== ANIMATIONS ====== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+.delay-4 { animation-delay: 0.6s; }
+
+@keyframes scrollDown {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
+}
+.scroll-indicator {
+  animation: scrollDown 1.5s ease-in-out infinite;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ====== DIVIDER ====== */
+.divider-blue {
+  width: 80px;
+  height: 3px;
+  background: var(--blue-bright);
+  margin: 1.5rem auto;
 }
