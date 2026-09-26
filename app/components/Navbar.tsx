@@ -11,6 +11,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll(); // check on mount
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -27,17 +28,17 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${
         scrolled
-          ? 'bg-black/95 backdrop-blur-md py-3 border-b border-white/10'
-          : 'bg-transparent py-6'
+          ? 'bg-black/95 backdrop-blur-md py-3 border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.6)]'
+          : 'bg-black/80 backdrop-blur-md py-5 border-white/5'
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-center">
-          {/* Logo — wordmark like America's Gym */}
-          <Link href="/" className="flex items-baseline gap-2">
-            <span className="font-display text-2xl md:text-3xl tracking-wide text-white">
+          {/* Logo */}
+          <Link href="/" className="flex items-baseline gap-2 group">
+            <span className="font-display text-2xl md:text-3xl tracking-wide text-white group-hover:text-sky-400 transition-colors">
               FITLIFE
             </span>
             <span className="hidden sm:inline-block text-[0.6rem] tracking-[0.4em] text-sky-400 font-semibold font-condensed">
@@ -61,8 +62,9 @@ const Navbar = () => {
             </a>
           </div>
 
+          {/* Mobile menu button */}
           <button
-            className="lg:hidden text-white text-2xl"
+            className="lg:hidden text-white text-2xl w-10 h-10 flex items-center justify-center border border-white/15 hover:border-sky-400 hover:text-sky-400 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -77,8 +79,8 @@ const Navbar = () => {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className={`block py-3 font-condensed text-sm tracking-[0.25em] uppercase ${
-                  pathname === link.href ? 'text-sky-400' : 'text-white/70'
+                className={`block py-3 font-condensed text-sm tracking-[0.25em] uppercase border-b border-white/5 ${
+                  pathname === link.href ? 'text-sky-400' : 'text-white/70 hover:text-white'
                 }`}
               >
                 {link.label}
@@ -86,7 +88,7 @@ const Navbar = () => {
             ))}
             <a
               href="tel:09954630320"
-              className="block py-3 font-condensed text-sm tracking-[0.25em] uppercase text-sky-400"
+              className="block py-4 mt-2 font-condensed text-sm tracking-[0.25em] uppercase text-sky-400"
             >
               📞 0995 463 0320
             </a>
