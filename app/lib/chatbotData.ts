@@ -22,11 +22,11 @@ export const GYM_INFO = {
   followers: '16K+',
   members: '4K+',
   programs: 10,
-  distanceFromCity: '≈10 minutes', // EDIT: real drive time from Poblacion
+  distanceFromCity: '≈10 minutes',
 } as const;
 
 // ============================================================
-// EQUIPMENT — DUMMY DATA
+// EQUIPMENT
 // ============================================================
 export const EQUIPMENT = {
   strength: [
@@ -68,7 +68,7 @@ export const EQUIPMENT = {
 } as const;
 
 // ============================================================
-// COACHES — DUMMY DATA
+// COACHES
 // ============================================================
 export const COACHES = [
   {
@@ -123,11 +123,11 @@ export type KBEntry = {
 
 export const KNOWLEDGE_BASE: KBEntry[] = [
   // ============================================================
-  // META — FAQ, HELP, CONFUSED (put first so they always match)
+  // META — FAQ, HELP
   // ============================================================
   {
     category: 'faq',
-    keywords: ['faq', 'faqs', 'frequently asked', 'common questions', 'questions'],
+    keywords: ['faq', 'faqs', 'frequently asked', 'common questions', 'questions', 'q'],
     answer: `Here are the questions I get most often:
 
 💰 How much is membership?
@@ -160,12 +160,12 @@ Just type one of those, or call us at ${GYM_INFO.phone}.`,
   // ============================================================
   {
     category: 'pricing-day-pass',
-    keywords: ['day pass', 'daypass', 'one day', '1 day', 'walk in fee', 'walk-in fee'],
+    keywords: ['day pass', 'daypass', 'one day', '1 day', 'walk in fee', 'walk-in fee', 'dp'],
     answer: `Our Day Pass is ${peso(PRICING.dayPass.price)} — full gym access for one day, all equipment available, coach assistance included.`,
   },
   {
     category: 'pricing-premium',
-    keywords: ['premium', 'vip', 'premium membership', 'premium member'],
+    keywords: ['premium', 'vip', 'premium membership', 'premium member', 'prem'],
     answer: PRICING.premium.available
       ? `Premium Membership — ${peso(PRICING.premium.monthly)}/month
 
@@ -177,7 +177,7 @@ Call ${GYM_INFO.phone} to upgrade.`
   },
   {
     category: 'pricing-student',
-    keywords: ['student', 'student rate', 'student price', 'discount', 'bulk', 'promo', 'promos', 'estudyante'],
+    keywords: ['student', 'student rate', 'student price', 'discount', 'bulk', 'promo', 'promos', 'estudyante', 'stud', 'stu'],
     answer: `Student rate — ${peso(PRICING.student.monthly)}/month (valid student ID required)
 Bulk package — ${peso(PRICING.student.bulk)} for ${PRICING.student.bulkMonths} months prepaid
 
@@ -196,7 +196,7 @@ Call ${GYM_INFO.phone} to enroll.`,
   },
   {
     category: 'pricing-member',
-    keywords: ['member rate', 'member price', 'member fee', 'member monthly'],
+    keywords: ['member rate', 'member price', 'member fee', 'member monthly', 'mem'],
     answer: `Member Monthly — ${peso(PRICING.member.monthly)}
 Member Quarterly — ${peso(PRICING.member.quarterly)}
 Member Annual — ${peso(PRICING.member.annual)}
@@ -205,7 +205,7 @@ Call ${GYM_INFO.phone} to enroll.`,
   },
   {
     category: 'pricing-walk-in',
-    keywords: ['walk in', 'walk-in', 'not a member'],
+    keywords: ['walk in', 'walk-in', 'not a member', 'walkin'],
     answer: `Walk-in (non-member) Daily — ${peso(PRICING.walkIn.daily)}
 Walk-in Monthly — ${peso(PRICING.walkIn.monthly)}
 Day Pass — ${peso(PRICING.dayPass.price)}
@@ -214,7 +214,7 @@ Call ${GYM_INFO.phone} for details.`,
   },
   {
     category: 'pricing-monthly',
-    keywords: ['monthly fee', 'monthly price', 'monthly rate', 'membership fee', 'membership price', 'per month', 'monthly'],
+    keywords: ['monthly fee', 'monthly price', 'monthly rate', 'membership fee', 'membership price', 'per month', 'monthly', 'mo'],
     answer: `Our full rate list:
 
 Day Pass — ${peso(PRICING.dayPass.price)}
@@ -229,7 +229,7 @@ Call ${GYM_INFO.phone} to enroll.`,
   },
   {
     category: 'pricing-general',
-    keywords: ['pricing', 'price', 'prices', 'rate', 'rates', 'fee', 'fees', 'cost', 'costs', 'how much', 'bayad'],
+    keywords: ['pricing', 'price', 'prices', 'rate', 'rates', 'fee', 'fees', 'cost', 'costs', 'how much', 'bayad', 'presyo', 'magkano'],
     answer: `Here are our rates:
 
 Day Pass — ${peso(PRICING.dayPass.price)}
@@ -246,12 +246,12 @@ Call ${GYM_INFO.phone} for current promos.`,
   // ============================================================
   {
     category: 'hours',
-    keywords: ['open', 'opening', 'hours', 'hour', 'time', 'schedule', 'closing', 'close', 'bukas', 'oras'],
+    keywords: ['open', 'opening', 'hours', 'hour', 'time', 'schedule', 'closing', 'close', 'bukas', 'oras', 'hrs', 'hr', 'when'],
     answer: `We're open ${GYM_INFO.hours.weekday}. ${GYM_INFO.hours.sunday}.`,
   },
   {
     category: 'hours-sunday',
-    keywords: ['sunday', 'sundays'],
+    keywords: ['sunday', 'sundays', 'sun'],
     answer: `We're closed on Sundays. We're open Monday to Saturday, 6AM–10PM.`,
   },
   {
@@ -265,12 +265,12 @@ Call ${GYM_INFO.phone} for current promos.`,
   // ============================================================
   {
     category: 'location',
-    keywords: ['location', 'where', 'address', 'find', 'directions', 'direction', 'map', 'saan', 'nasaan'],
+    keywords: ['location', 'where', 'address', 'find', 'directions', 'direction', 'map', 'saan', 'nasaan', 'loc', 'addr', 'add', 'saan kayo', 'saan ba'],
     answer: `We're at ${GYM_INFO.address}. Tap "Directions" below for GPS.`,
   },
   {
     category: 'location-distance',
-    keywords: ['distance', 'far', 'how far', 'kilometers', 'kilometres', 'km', 'minutes away', 'how long to get there', 'from city', 'from poblacion', 'from downtown', 'from town', 'malayo'],
+    keywords: ['distance', 'far', 'how far', 'kilometers', 'kilometres', 'km', 'minutes away', 'how long to get there', 'from city', 'from poblacion', 'from downtown', 'from town', 'malayo', 'layo', 'gaano kalayo'],
     answer: `We're about ${GYM_INFO.distanceFromCity} from Valencia City proper (Poblacion) by car — same area as Lake Apo. Located at ${GYM_INFO.address}. Tap "Directions" below for GPS.`,
   },
   {
@@ -284,7 +284,7 @@ Call ${GYM_INFO.phone} for current promos.`,
   // ============================================================
   {
     category: 'trial',
-    keywords: ['trial', 'free', 'try', 'first time', 'libre'],
+    keywords: ['trial', 'free', 'try', 'first time', 'libre', 'free trial', 'ft'],
     answer: `Your first consultation is free! Walk in any day we're open, or call ${GYM_INFO.phone} to schedule.`,
   },
 
@@ -293,12 +293,12 @@ Call ${GYM_INFO.phone} for current promos.`,
   // ============================================================
   {
     category: 'beginner',
-    keywords: ['beginner', 'beginners', 'newbie', 'newbies', 'never', 'starting out', 'fresh', 'nervous', 'scared', 'baguhan', 'first timer'],
+    keywords: ['beginner', 'beginners', 'newbie', 'newbies', 'never', 'starting out', 'fresh', 'nervous', 'scared', 'baguhan', 'first timer', 'noob', 'newbie', 'novice'],
     answer: 'Absolutely — beginners are welcome. We have an everyday coach on the floor and a "Beginner-Friendly Coaching" program. No experience needed.',
   },
   {
     category: 'beginner-what-to-bring',
-    keywords: ['what to bring', 'what should i bring', 'need to bring', 'dapat dalhin'],
+    keywords: ['what to bring', 'what should i bring', 'need to bring', 'dapat dalhin', 'bring'],
     answer: `Bring comfortable workout clothes, closed shoes, a towel, and a water bottle. Lockers are available for your belongings.`,
   },
   {
@@ -312,7 +312,7 @@ Call ${GYM_INFO.phone} for current promos.`,
   // ============================================================
   {
     category: 'equipment',
-    keywords: ['equipment', 'equipments', 'machine', 'machines', 'gear', 'gears'],
+    keywords: ['equipment', 'equipments', 'machine', 'machines', 'gear', 'gears', 'equip', 'eq', 'gym equipment'],
     answer: `Here's what we have:
 
 Strength:
@@ -342,7 +342,7 @@ All available for member use.`,
   },
   {
     category: 'equipment-strength',
-    keywords: ['barbell', 'barbells', 'dumbbell', 'dumbbells', 'kettlebell', 'kettlebells', 'squat rack', 'bench', 'benches', 'cable', 'cables', 'lat pulldown', 'leg press', 'smith machine', 'free weights'],
+    keywords: ['barbell', 'barbells', 'dumbbell', 'dumbbells', 'kettlebell', 'kettlebells', 'squat rack', 'bench', 'benches', 'cable', 'cables', 'lat pulldown', 'leg press', 'smith machine', 'free weights', 'db', 'bb'],
     answer: `Our strength section has:
 ${EQUIPMENT.strength.map((e) => `• ${e}`).join('\n')}
 
@@ -350,7 +350,7 @@ All available for member use.`,
   },
   {
     category: 'equipment-boxing',
-    keywords: ['heavy bag', 'heavy bags', 'punching bag', 'punching bags', 'boxing ring', 'speed bag', 'focus pads'],
+    keywords: ['heavy bag', 'heavy bags', 'punching bag', 'punching bags', 'boxing ring', 'speed bag', 'focus pads', 'bag'],
     answer: `Our boxing section has:
 ${EQUIPMENT.boxing.map((e) => `• ${e}`).join('\n')}
 
@@ -362,17 +362,17 @@ All available for member use.`,
   // ============================================================
   {
     category: 'program-boxing',
-    keywords: ['boxing', 'muaythai', 'muay thai', 'muay', 'kickbox', 'kickboxing'],
+    keywords: ['boxing', 'muaythai', 'muay thai', 'muay', 'kickbox', 'kickboxing', 'box'],
     answer: 'Yes! We offer Boxing and Muaythai Kickboxing, coached by Jake Morrison. Beginner+ and Intermediate levels available.',
   },
   {
     category: 'program-pilates',
-    keywords: ['pilates', 'mat', 'asian', 'posture', 'flexibility'],
+    keywords: ['pilates', 'mat', 'asian', 'posture', 'flexibility', 'pila'],
     answer: 'Our Asian Mat Pilates classes are beginner-friendly, coached by Sofia Reyes. Focus on core, posture, and flexibility.',
   },
   {
     category: 'program-dance',
-    keywords: ['zumba', 'step', 'dance', 'sayaw', 'step dance'],
+    keywords: ['zumba', 'step', 'dance', 'sayaw', 'step dance', 'dancing'],
     answer: 'We have Zumba and Step Dance — high-energy cardio in rhythm. All levels welcome. Coached by Angela Lim.',
   },
   {
@@ -382,7 +382,7 @@ All available for member use.`,
   },
   {
     category: 'program-strength',
-    keywords: ['weight training', 'strength training', 'powerlifting', 'lifting', 'weights'],
+    keywords: ['weight training', 'strength training', 'powerlifting', 'lifting', 'weights', 'wt'],
     answer: 'We offer Weight Training and Strength Training for all levels. Free weights, barbells, dumbbells, and coaching on squats, deadlifts, and presses.',
   },
   {
@@ -392,12 +392,12 @@ All available for member use.`,
   },
   {
     category: 'program-list',
-    keywords: ['program', 'programs', 'class', 'classes', 'offer', 'offers'],
+    keywords: ['program', 'programs', 'class', 'classes', 'offer', 'offers', 'prog'],
     answer: 'We have 10 programs: Weight Training, Strength Training, Boxing, Muaythai, Step Dance, Zumba, Asian Mat Pilates, HIIT, Cardio & Fat Loss, and Beginner-Friendly Coaching.',
   },
   {
     category: 'program-schedule',
-    keywords: ['class schedule', 'class times', 'when are classes', 'program schedule', 'timetable'],
+    keywords: ['class schedule', 'class times', 'when are classes', 'program schedule', 'timetable', 'sched'],
     answer: `Class schedules vary by program. Call ${GYM_INFO.phone} or message us on Facebook for the current timetable.`,
   },
 
@@ -406,7 +406,7 @@ All available for member use.`,
   // ============================================================
   {
     category: 'coaches-list',
-    keywords: ['coach', 'coaches', 'trainer', 'trainers', 'instructor', 'instructors', 'staff'],
+    keywords: ['coach', 'coaches', 'trainer', 'trainers', 'instructor', 'instructors', 'staff', 'coc', 'coaches list'],
     answer: `We have 7 coaches:
 
 ${COACHES.map((c) => `• ${c.name} — ${c.role}`).join('\n')}
@@ -450,20 +450,20 @@ See the Coaches page for full profiles.`,
   },
   {
     category: 'coach-personal',
-    keywords: ['personal training', 'one on one', '1-on-1', '1 on 1', 'private coaching'],
+    keywords: ['personal training', 'one on one', '1-on-1', '1 on 1', 'private coaching', 'pt'],
     answer: `Personal training is available with any of our 7 coaches. Call ${GYM_INFO.phone} to book a session. First consultation is free.`,
   },
 
   // ============================================================
   // FACILITIES
   // ============================================================
-  { category: 'wifi', keywords: ['wifi', 'wi-fi', 'internet', 'connection'], answer: 'Free WiFi available for all members.' },
+  { category: 'wifi', keywords: ['wifi', 'wi-fi', 'internet', 'connection', 'net'], answer: 'Free WiFi available for all members.' },
   { category: 'parking', keywords: ['parking', 'park', 'car', 'cars', 'motorcycle', 'motorcycles'], answer: 'We have wide parking available — cars and motorcycles.' },
-  { category: 'showers', keywords: ['shower', 'showers', 'bathroom', 'bathrooms', 'cr', 'comfort room', 'toilet', 'toilets'], answer: 'We do not have showers currently — lockers are available for your belongings.' },
+  { category: 'showers', keywords: ['shower', 'showers', 'bathroom', 'bathrooms', 'cr', 'comfort room', 'toilet', 'toilets', 'restroom'], answer: 'We do not have showers currently — lockers are available for your belongings.' },
   { category: 'lockers', keywords: ['locker', 'lockers', 'storage'], answer: 'Lockers are available for members to store their belongings. Bring your own padlock.' },
   {
     category: 'facilities',
-    keywords: ['facility', 'facilities', 'amenity', 'amenities'],
+    keywords: ['facility', 'facilities', 'amenity', 'amenities', 'fac'],
     answer: 'Facilities include: Free Weights Area, Boxing Ring, Pilates Studio, Cardio Zone, Free WiFi, and Wide Parking.',
   },
   {
@@ -480,7 +480,7 @@ See the Coaches page for full profiles.`,
   // ============================================================
   // CONTACT
   // ============================================================
-  { category: 'contact-phone', keywords: ['contact', 'call', 'phone', 'number', 'reach', 'text'], answer: `Call or text ${GYM_INFO.phone}. You can also message us on Facebook at ${GYM_INFO.facebookHandle}.` },
+  { category: 'contact-phone', keywords: ['contact', 'call', 'phone', 'number', 'reach', 'text', 'num', 'no', 'tel', 'cell', 'mobile', 'landline'], answer: `Call or text ${GYM_INFO.phone}. You can also message us on Facebook at ${GYM_INFO.facebookHandle}.` },
   { category: 'contact-facebook', keywords: ['facebook', 'messenger', 'page', 'fb'], answer: `Find us on Facebook: ${GYM_INFO.facebookHandle} — ${GYM_INFO.followers} strong. Message us anytime!` },
   { category: 'contact-instagram', keywords: ['instagram', 'ig'], answer: 'Follow us on Instagram for daily updates and member spotlights.' },
 
@@ -495,7 +495,7 @@ See the Coaches page for full profiles.`,
   // ============================================================
   // MEMBERSHIP / JOINING
   // ============================================================
-  { category: 'membership-join', keywords: ['join', 'sign up', 'signup', 'register', 'enroll', 'how to become a member'], answer: `To join, visit us at ${GYM_INFO.address}, or call ${GYM_INFO.phone}. Walk-ins welcome. First consultation is free.` },
+  { category: 'membership-join', keywords: ['join', 'sign up', 'signup', 'register', 'enroll', 'how to become a member', 'apply'], answer: `To join, visit us at ${GYM_INFO.address}, or call ${GYM_INFO.phone}. Walk-ins welcome. First consultation is free.` },
   { category: 'membership-age', keywords: ['age', 'old', 'young', 'senior', 'teen', 'kid', 'child', 'minors'], answer: 'We welcome all ages. For minors, please bring a parent or guardian on your first visit.' },
   { category: 'membership-cancel', keywords: ['cancel', 'refund', 'pause', 'freeze', 'membership cancel'], answer: `For membership changes, cancellations, or pauses, please call ${GYM_INFO.phone} directly.` },
   { category: 'membership-requirements', keywords: ['requirements', 'requirement', 'what do i need', 'valid id', 'id'], answer: `Just bring a valid ID and payment. For students, bring your student ID to get the student rate. Call ${GYM_INFO.phone} for details.` },
@@ -509,8 +509,8 @@ See the Coaches page for full profiles.`,
   // ============================================================
   // BOOKING
   // ============================================================
-  { category: 'booking', keywords: ['book', 'booking', 'appointment', 'reserve', 'reservation', 'session'], answer: `Call or text ${GYM_INFO.phone} to book a session. First consultation is always free.` },
-  { category: 'booking-walkin', keywords: ['walk in', 'walk-in', 'no appointment'], answer: `Walk-ins are welcome during open hours (${GYM_INFO.hours.weekday}). No appointment needed for regular gym access.` },
+  { category: 'booking', keywords: ['book', 'booking', 'appointment', 'reserve', 'reservation', 'session', 'book now'], answer: `Call or text ${GYM_INFO.phone} to book a session. First consultation is always free.` },
+  { category: 'booking-walkin', keywords: ['walk in', 'walk-in', 'no appointment', 'walkin'], answer: `Walk-ins are welcome during open hours (${GYM_INFO.hours.weekday}). No appointment needed for regular gym access.` },
   { category: 'booking-pt', keywords: ['personal trainer', 'personal training', 'pt session'], answer: `Personal training is available. Call ${GYM_INFO.phone} to book a session with one of our coaches.` },
 
   // ============================================================
@@ -525,15 +525,15 @@ See the Coaches page for full profiles.`,
   // ============================================================
   // GREETINGS (LAST)
   // ============================================================
-  { category: 'greeting-hi', keywords: ['hi', 'hello', 'hey', 'kumusta', 'kamusta', 'uy', 'yo'], answer: "Hi there! 👋 How can I help you today? Ask me about hours, pricing, equipment, programs, or book a free trial." },
-  { category: 'greeting-thanks', keywords: ['thank', 'thanks', 'salamat', 'ty'], answer: "You're welcome! 💪 See you at the gym." },
-  { category: 'greeting-bye', keywords: ['bye', 'goodbye', 'see you'], answer: 'See you at FitLife! Train hard. 💪' },
+  { category: 'greeting-hi', keywords: ['hi', 'hello', 'hey', 'kumusta', 'kamusta', 'uy', 'yo', 'helo', 'hai'], answer: "Hi there! 👋 How can I help you today? Ask me about hours, pricing, equipment, programs, or book a free trial." },
+  { category: 'greeting-thanks', keywords: ['thank', 'thanks', 'salamat', 'ty', 'thx'], answer: "You're welcome! 💪 See you at the gym." },
+  { category: 'greeting-bye', keywords: ['bye', 'goodbye', 'see you', 'cya'], answer: 'See you at FitLife! Train hard. 💪' },
 ];
 
 export const QUICK_REPLIES = ['Hours', 'Pricing', 'Location', 'Equipment'] as const;
 
 // ============================================================
-// FALLBACKS — varied friendly responses when nothing matches
+// FALLBACKS
 // ============================================================
 export const FALLBACK_REPLIES = [
   `Hmm, I'm not sure about that one. 🤔 Try asking about our hours, pricing, equipment, coaches, or location — or call us at ${GYM_INFO.phone} and a human will help you out.`,

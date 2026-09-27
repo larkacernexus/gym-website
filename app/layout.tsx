@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   title: 'FitLife Fitness Gym - Valencia | All In One Gym For All Your Goals',
   description:
     'Your Fitness. Your Community. Your Transformation. Weight Training, Boxing, Muaythai, Zumba, Asian Mat Pilates & HIIT. Quillo Building, Purok 10, Guinoyuran Rd, Valencia City.',
+  icons: {
+    icon: '/logo/fitlife.jpg',
+    shortcut: '/logo/fitlife.jpg',
+    apple: '/logo/fitlife.jpg',
+  },
 };
 
 export default function RootLayout({
