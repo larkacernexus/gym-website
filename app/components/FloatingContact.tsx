@@ -16,7 +16,6 @@ type Message = {
 export default function FloatingContact() {
   const [open, setOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
-  const [visible, setVisible] = useState(false);
 
   const [messages, setMessages] = useState<Message[]>([
     { role: 'bot', text: WELCOME_MESSAGE },
@@ -27,15 +26,20 @@ export default function FloatingContact() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 300);
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, typing]);
+
+  // Lock body scroll when chat is open on mobile
+  useEffect(() => {
+    if (chatOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [chatOpen]);
 
   const send = (text: string) => {
     const trimmed = text.trim();
@@ -56,109 +60,117 @@ export default function FloatingContact() {
     <>
       {/* ===== Chat Panel ===== */}
       <div
-        className={`fixed bottom-6 right-6 z-[95] w-[calc(100vw-48px)] max-w-[380px] bg-neutral-950 border border-white/10 shadow-2xl shadow-black/60 transition-all duration-300 origin-bottom-right ${
-          chatOpen
+        className={`fixed z-[95] bg-neutral-950 border border-white/10 shadow-2xl shadow-black/60 transition-all duration-300
+
+          /* MOBILE — fullscreen */
+          inset-0 w-full h-full
+          sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[calc(100vw-48px)] sm:max-w-[380px] sm:h-auto
+          sm:origin-bottom-right
+
+          ${chatOpen
             ? 'opacity-100 scale-100 pointer-events-auto'
             : 'opacity-0 scale-90 pointer-events-none'
-        }`}
+          }`}
       >
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-700 to-blue-900 px-4 py-3 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white">
-            🏋️
-          </div>
-          <div className="flex-1">
-            <div className="font-display text-sm text-white leading-none">
-              FitLife Assistant
+        <div className="flex flex-col h-full sm:h-auto">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-700 to-blue-900 px-4 py-3 flex items-center gap-3 shrink-0">
+            <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white">
+              🏋️
             </div>
-            <div className="font-condensed text-[0.6rem] tracking-[0.2em] uppercase text-sky-200 font-semibold mt-1">
-              ● Online
+            <div className="flex-1">
+              <div className="font-display text-sm text-white leading-none">
+                FitLife Assistant
+              </div>
+              <div className="font-condensed text-[0.6rem] tracking-[0.2em] uppercase text-sky-200 font-semibold mt-1">
+                ● Online
+              </div>
             </div>
-          </div>
-          <button
-            onClick={() => setChatOpen(false)}
-            aria-label="Close chat"
-            className="text-white/80 hover:text-white text-lg"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Messages */}
-        <div className="h-[360px] overflow-y-auto p-4 space-y-3 bg-neutral-950">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            <button
+              onClick={() => setChatOpen(false)}
+              aria-label="Close chat"
+              className="text-white/80 hover:text-white text-2xl leading-none w-10 h-10 flex items-center justify-center"
             >
-              <div
-                className={`max-w-[85%] px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
-                  m.role === 'user'
-                    ? 'bg-blue-600 text-white rounded-t-2xl rounded-bl-2xl rounded-br-sm'
-                    : 'bg-neutral-900 text-white/90 border border-white/10 rounded-t-2xl rounded-br-2xl rounded-bl-sm'
-                }`}
-              >
-                {m.text}
-              </div>
-            </div>
-          ))}
+              ✕
+            </button>
+          </div>
 
-          {typing && (
-            <div className="flex justify-start">
-              <div className="bg-neutral-900 border border-white/10 px-4 py-2.5 rounded-t-2xl rounded-br-2xl rounded-bl-sm flex gap-1">
-                <span className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-bounce" />
+          {/* Messages — flex-1 so it fills available space on mobile */}
+          <div className="flex-1 sm:flex-none sm:h-[360px] overflow-y-auto p-4 space-y-3 bg-neutral-950">
+            {messages.map((m, i) => (
+              <div
+                key={i}
+                className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[85%] px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
+                    m.role === 'user'
+                      ? 'bg-blue-600 text-white rounded-t-2xl rounded-bl-2xl rounded-br-sm'
+                      : 'bg-neutral-900 text-white/90 border border-white/10 rounded-t-2xl rounded-br-2xl rounded-bl-sm'
+                  }`}
+                >
+                  {m.text}
+                </div>
               </div>
+            ))}
+
+            {typing && (
+              <div className="flex justify-start">
+                <div className="bg-neutral-900 border border-white/10 px-4 py-2.5 rounded-t-2xl rounded-br-2xl rounded-bl-sm flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                  <span className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                  <span className="w-1.5 h-1.5 bg-sky-400 rounded-full animate-bounce" />
+                </div>
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Quick replies */}
+          {messages.length <= 1 && (
+            <div className="px-4 pb-2 flex flex-wrap gap-2 bg-neutral-950 shrink-0">
+              {QUICK_REPLIES.map((q) => (
+                <button
+                  key={q}
+                  onClick={() => send(q)}
+                  className="font-condensed text-[0.65rem] tracking-[0.15em] uppercase font-bold px-3 py-1.5 border border-sky-400/40 text-sky-400 hover:bg-sky-400/10 transition-all"
+                >
+                  {q}
+                </button>
+              ))}
             </div>
           )}
 
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* Quick replies */}
-        {messages.length <= 1 && (
-          <div className="px-4 pb-2 flex flex-wrap gap-2 bg-neutral-950">
-            {QUICK_REPLIES.map((q) => (
-              <button
-                key={q}
-                onClick={() => send(q)}
-                className="font-condensed text-[0.65rem] tracking-[0.15em] uppercase font-bold px-3 py-1.5 border border-sky-400/40 text-sky-400 hover:bg-sky-400/10 transition-all"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Input */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            send(input);
-          }}
-          className="border-t border-white/10 p-3 flex gap-2 bg-black"
-        >
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your question..."
-            className="flex-1 bg-neutral-900 border border-white/10 text-white text-sm px-3 py-2.5 focus:outline-none focus:border-blue-600 transition-colors"
-          />
-          <button
-            type="submit"
-            aria-label="Send"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 font-bold transition-colors"
+          {/* Input — text-base prevents iOS auto-zoom */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              send(input);
+            }}
+            className="border-t border-white/10 p-3 flex gap-2 bg-black shrink-0"
           >
-            ➤
-          </button>
-        </form>
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your question..."
+              className="flex-1 bg-neutral-900 border border-white/10 text-white text-base px-3 py-2.5 focus:outline-none focus:border-blue-600 transition-colors"
+            />
+            <button
+              type="submit"
+              aria-label="Send"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 font-bold transition-colors"
+            >
+              ➤
+            </button>
+          </form>
+        </div>
       </div>
 
-      {/* ===== Main FAB menu ===== */}
+      {/* ===== Main FAB menu — always visible when chat closed ===== */}
       <div
         className={`fixed bottom-6 right-6 z-[90] transition-all duration-500 ${
-          visible && !chatOpen
+          !chatOpen
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-6 pointer-events-none'
         }`}
