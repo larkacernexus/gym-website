@@ -52,29 +52,9 @@ export default function Gallery() {
   const [active, setActive] = useState<Category>('All');
   const [lightbox, setLightbox] = useState<number | null>(null);
 
-  // Drag state for desktop grid (kept — harmless)
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const [hasDragged, setHasDragged] = useState(false);
-
   const filtered =
     active === 'All' ? photos : photos.filter((p) => p.category === active);
 
-  // Lock body scroll when lightbox is open
-  useEffect(() => {
-    if (lightbox !== null) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [lightbox]);
-
-  // Keyboard nav for lightbox
   useEffect(() => {
     if (lightbox === null) return;
     const onKey = (e: KeyboardEvent) => {
@@ -88,43 +68,10 @@ export default function Gallery() {
     return () => window.removeEventListener('keydown', onKey);
   }, [lightbox, filtered.length]);
 
-  // Drag handlers (desktop)
-  const onMouseDown = (e: React.MouseEvent) => {
-    if (!scrollRef.current) return;
-    setIsDragging(true);
-    setHasDragged(false);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    if (Math.abs(x - startX) > 5) setHasDragged(true);
-    scrollRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const onMouseUp = () => {
-    setIsDragging(false);
-    setTimeout(() => setHasDragged(false), 50);
-  };
-
-  const onMouseLeave = () => {
-    setIsDragging(false);
-    setHasDragged(false);
-  };
-
-  const openLightbox = (index: number) => {
-    if (hasDragged) return;
-    setLightbox(index);
-  };
-
   return (
     <>
-      {/* Category filter tabs — horizontally scrollable on mobile */}
-      <div className="flex gap-2 justify-start md:justify-center mb-8 md:mb-10 overflow-x-auto pb-2 scrollbar-hide -mx-5 sm:-mx-6 px-5 sm:px-6 md:mx-0 md:px-0">
+      {/* Category filter tabs */}
+      <div className="flex flex-wrap gap-2 justify-center mb-10">
         {categories.map((c) => {
           const count =
             c === 'All'
@@ -137,85 +84,24 @@ export default function Gallery() {
                 setActive(c);
                 setLightbox(null);
               }}
-              className={`shrink-0 font-condensed text-[0.65rem] md:text-[0.7rem] tracking-[0.2em] uppercase font-semibold px-3 py-2 border transition-all whitespace-nowrap ${
+              className={`font-condensed text-[0.7rem] tracking-[0.2em] uppercase font-semibold px-4 py-2 border transition-all ${
                 active === c
                   ? 'bg-blue-600 border-blue-600 text-white'
                   : 'border-white/20 text-white/60 hover:border-blue-600 hover:text-white'
               }`}
             >
-              {c}{' '}
-              <span className={active === c ? 'text-white/70' : 'text-white/40'}>
-                ({count})
-              </span>
+              {c} <span className="text-white/40 ml-1">({count})</span>
             </button>
           );
         })}
       </div>
 
-      {/* ===== MOBILE — horizontal swipe carousel ===== */}
-      <div className="md:hidden -mx-5 sm:-mx-6">
-        <div
-          className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-5 sm:px-6 pb-4"
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
-          {filtered.map((photo, i) => (
-            <button
-              key={`${photo.src}-${i}`}
-              onClick={() => openLightbox(i)}
-              className="snap-center shrink-0 w-[85%] sm:w-[70%] aspect-[4/3] relative overflow-hidden bg-neutral-900 border border-white/5 active:border-blue-600/40 transition-all"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                loading="lazy"
-                draggable={false}
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-              <div className="absolute bottom-4 left-4 right-4 text-left">
-                <div className="font-condensed text-[0.6rem] tracking-[0.25em] uppercase text-sky-400 font-semibold mb-1">
-                  {photo.category}
-                </div>
-                <div className="font-display text-base text-white leading-tight">
-                  {photo.alt}
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Swipe hint dots */}
-        <div className="flex justify-center items-center gap-1.5 mt-1">
-          {filtered.map((_, i) => (
-            <span
-              key={i}
-              className="w-1.5 h-1.5 rounded-full bg-white/20"
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* ===== DESKTOP — grid + drag ===== */}
-      <div
-        ref={scrollRef}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseLeave}
-        className={`hidden md:grid md:grid-cols-3 lg:grid-cols-4 gap-3 select-none ${
-          isDragging ? 'cursor-grabbing' : 'md:cursor-grab'
-        }`}
-        style={{ scrollBehavior: 'auto' }}
-      >
+      {/* Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {filtered.map((photo, i) => (
           <button
             key={`${photo.src}-${i}`}
-            onClick={() => openLightbox(i)}
+            onClick={() => setLightbox(i)}
             className={`group relative overflow-hidden bg-neutral-900 border border-white/5 hover:border-blue-600/40 transition-all ${
               i % 7 === 0 ? 'md:col-span-2 md:row-span-2 aspect-square' : 'aspect-[4/3]'
             }`}
@@ -225,8 +111,7 @@ export default function Gallery() {
               src={photo.src}
               alt={photo.alt}
               loading="lazy"
-              draggable={false}
-              className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 pointer-events-none"
+              className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 text-left">
@@ -243,60 +128,195 @@ export default function Gallery() {
 
       {/* Lightbox */}
       {lightbox !== null && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 md:p-6"
-          onClick={() => setLightbox(null)}
-        >
-          <div
-            className="relative w-full max-w-5xl max-h-[85vh] aspect-[4/3] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={filtered[lightbox].src}
-              alt={filtered[lightbox].alt}
-              className="w-full h-full object-contain"
-            />
-
-            {/* Prev / Next — hidden on mobile since swipe works */}
-            <button
-              onClick={() =>
-                setLightbox((lightbox - 1 + filtered.length) % filtered.length)
-              }
-              className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 text-white text-xl hover:bg-blue-600 hover:border-blue-600 transition-all items-center justify-center"
-              aria-label="Previous"
-            >
-              ←
-            </button>
-            <button
-              onClick={() => setLightbox((lightbox + 1) % filtered.length)}
-              className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 text-white text-xl hover:bg-blue-600 hover:border-blue-600 transition-all items-center justify-center"
-              aria-label="Next"
-            >
-              →
-            </button>
-
-            {/* Close */}
-            <button
-              onClick={() => setLightbox(null)}
-              className="absolute top-4 right-4 w-10 h-10 bg-black/60 border border-white/20 text-white text-lg hover:bg-blue-600 hover:border-blue-600 transition-all flex items-center justify-center"
-              aria-label="Close"
-            >
-              ✕
-            </button>
-
-            {/* Caption */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4 md:p-6">
-              <div className="font-condensed text-[0.6rem] md:text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 font-semibold mb-1">
-                {filtered[lightbox].category}
-              </div>
-              <div className="font-display text-lg md:text-2xl text-white">
-                {filtered[lightbox].alt}
-              </div>
-            </div>
-          </div>
-        </div>
+        <Lightbox
+          photos={filtered}
+          index={lightbox}
+          onClose={() => setLightbox(null)}
+          onChange={setLightbox}
+        />
       )}
     </>
+  );
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+function Lightbox({
+  photos,
+  index,
+  onClose,
+  onChange,
+}: {
+  photos: Photo[];
+  index: number;
+  onClose: () => void;
+  onChange: (i: number) => void;
+}) {
+  const photo = photos[index];
+
+  // Drag state
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Refs to safely read values inside event handlers
+  const startXRef = useRef(0);
+  const startYRef = useRef(0);
+  const indexRef = useRef(index);
+  const lengthRef = useRef(photos.length);
+
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
+
+  useEffect(() => {
+    lengthRef.current = photos.length;
+  }, [photos.length]);
+
+  // Lock body scroll
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+
+  // Reset drag on image change
+  useEffect(() => {
+    setDragX(0);
+    setIsDragging(false);
+  }, [index]);
+
+  // ===== Touch handlers =====
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length !== 1) return;
+    startXRef.current = e.touches[0].clientX;
+    startYRef.current = e.touches[0].clientY;
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - startXRef.current;
+    const dy = e.touches[0].clientY - startYRef.current;
+
+    // Only track horizontal movement
+    if (Math.abs(dx) > Math.abs(dy)) {
+      setDragX(dx);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    const threshold = 50;
+    const idx = indexRef.current;
+    const len = lengthRef.current;
+
+    if (dragX < -threshold) {
+      onChange((idx + 1) % len);
+    } else if (dragX > threshold) {
+      onChange((idx - 1 + len) % len);
+    }
+
+    setDragX(0);
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-0 md:p-6"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        className="relative w-full h-full md:max-w-5xl md:max-h-[85vh] md:aspect-[4/3] overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+        style={{ touchAction: 'pan-y' }}
+      >
+        {/* Image */}
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{
+            transform: `translateX(${dragX}px)`,
+            transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            draggable={false}
+            className="max-w-full max-h-full object-contain select-none pointer-events-none"
+          />
+        </div>
+
+        {/* Prev / Next — DESKTOP ONLY */}
+        <button
+          onClick={() => onChange((index - 1 + photos.length) % photos.length)}
+          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 text-white text-xl hover:bg-blue-600 hover:border-blue-600 transition-all items-center justify-center z-10"
+          aria-label="Previous"
+        >
+          ←
+        </button>
+        <button
+          onClick={() => onChange((index + 1) % photos.length)}
+          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 text-white text-xl hover:bg-blue-600 hover:border-blue-600 transition-all items-center justify-center z-10"
+          aria-label="Next"
+        >
+          →
+        </button>
+
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-10 h-10 bg-black/60 border border-white/20 text-white text-lg hover:bg-blue-600 hover:border-blue-600 transition-all flex items-center justify-center z-10"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
+        {/* MOBILE — swipe indicator dots */}
+        <div className="md:hidden absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 pointer-events-none max-w-[60vw] overflow-hidden">
+          {photos.length <= 12 ? (
+            photos.map((_, i) => (
+              <span
+                key={i}
+                className={`rounded-full transition-all duration-300 ${
+                  i === index
+                    ? 'w-6 h-1.5 bg-blue-500'
+                    : 'w-1.5 h-1.5 bg-white/30'
+                }`}
+              />
+            ))
+          ) : (
+            <span className="font-condensed text-[0.6rem] tracking-[0.2em] uppercase text-white/70 font-semibold">
+              {index + 1} / {photos.length}
+            </span>
+          )}
+        </div>
+
+        {/* Caption */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4 md:p-6 pointer-events-none">
+          <div className="font-condensed text-[0.6rem] md:text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 font-semibold mb-1">
+            {photo.category}
+          </div>
+          <div className="font-display text-lg md:text-2xl text-white">
+            {photo.alt}
+          </div>
+
+          <div className="md:hidden mt-3 flex items-center justify-center gap-2 font-condensed text-[0.55rem] tracking-[0.25em] uppercase text-white/50 font-semibold">
+            <span>←</span>
+            <span>Swipe to browse</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
