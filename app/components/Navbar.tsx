@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
@@ -11,10 +12,15 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    handleScroll(); // check on mount
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   const links = [
     { href: '/', label: 'Home' },
@@ -30,20 +36,32 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${
         scrolled
-          ? 'bg-black/95 backdrop-blur-md py-3 border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.6)]'
-          : 'bg-black/80 backdrop-blur-md py-5 border-white/5'
+          ? 'bg-black/95 backdrop-blur-md py-2 border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.6)]'
+          : 'bg-black/80 backdrop-blur-md py-3 border-white/5'
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-baseline gap-2 group">
-            <span className="font-display text-2xl md:text-3xl tracking-wide text-white group-hover:text-sky-400 transition-colors">
-              FITLIFE
-            </span>
-            <span className="hidden sm:inline-block text-[0.6rem] tracking-[0.4em] text-sky-400 font-semibold font-condensed">
-              FITNESS GYM
-            </span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-10 h-10 md:w-12 md:h-12 shrink-0">
+              <Image
+                src="/logo/fitlife.jpg"
+                alt="FitLife Fitness Gym"
+                fill
+                sizes="48px"
+                className="object-contain transition-transform duration-300 group-hover:scale-105"
+                priority
+              />
+            </div>
+            <div className="hidden sm:flex flex-col leading-none">
+              <span className="font-display text-xl md:text-2xl tracking-wide text-white group-hover:text-sky-400 transition-colors">
+                FITLIFE
+              </span>
+              <span className="text-[0.55rem] tracking-[0.35em] text-sky-400 font-semibold font-condensed mt-1">
+                FITNESS GYM
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Nav */}
