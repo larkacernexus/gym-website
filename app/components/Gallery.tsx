@@ -48,12 +48,39 @@ const categories: Category[] = [
   'Community',
 ];
 
+// How many photos to show initially on mobile, and per "Load More" tap
+const MOBILE_INITIAL = 6;
+const MOBILE_BATCH = 6;
+
 export default function Gallery() {
   const [active, setActive] = useState<Category>('All');
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const [mobileCount, setMobileCount] = useState(MOBILE_INITIAL);
+  const [isMobile, setIsMobile] = useState(false);
 
   const filtered =
     active === 'All' ? photos : photos.filter((p) => p.category === active);
+
+  // Detect mobile (client-only)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Reset mobile count when category changes
+  useEffect(() => {
+    setMobileCount(MOBILE_INITIAL);
+  }, [active]);
+
+  // Number of photos to actually render
+  const visibleCount = isMobile
+    ? Math.min(mobileCount, filtered.length)
+    : filtered.length;
+  const visible = filtered.slice(0, visibleCount);
+  const hasMoreMobile = isMobile && mobileCount < filtered.length;
+  const remaining = filtered.length - visibleCount;
 
   useEffect(() => {
     if (lightbox === null) return;
@@ -71,7 +98,7 @@ export default function Gallery() {
   return (
     <>
       {/* Category filter tabs */}
-      <div className="flex flex-wrap gap-2 justify-center mb-10">
+      <div className="flex flex-wrap gap-2 justify-center mb-8 md:mb-10">
         {categories.map((c) => {
           const count =
             c === 'All'
@@ -84,7 +111,7 @@ export default function Gallery() {
                 setActive(c);
                 setLightbox(null);
               }}
-              className={`font-condensed text-[0.7rem] tracking-[0.2em] uppercase font-semibold px-4 py-2 border transition-all ${
+              className={`font-condensed text-[0.65rem] md:text-[0.7rem] tracking-[0.2em] uppercase font-semibold px-3 md:px-4 py-2 border transition-all ${
                 active === c
                   ? 'bg-blue-600 border-blue-600 text-white'
                   : 'border-white/20 text-white/60 hover:border-blue-600 hover:text-white'
@@ -98,7 +125,7 @@ export default function Gallery() {
 
       {/* Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {filtered.map((photo, i) => (
+        {visible.map((photo, i) => (
           <button
             key={`${photo.src}-${i}`}
             onClick={() => setLightbox(i)}
@@ -126,6 +153,39 @@ export default function Gallery() {
         ))}
       </div>
 
+      {/* Load More button — MOBILE ONLY */}
+      {hasMoreMobile && (
+        <div className="md:hidden flex flex-col items-center mt-8 gap-3">
+          <button
+            onClick={() => setMobileCount((c) => c + MOBILE_BATCH)}
+            className="btn-outline w-full max-w-xs text-center"
+          >
+            Load More ({remaining} left)
+          </button>
+          <a
+            href="/gallery"
+            className="font-condensed text-[0.65rem] tracking-[0.25em] uppercase text-white/40 hover:text-sky-400 transition-colors font-semibold"
+          >
+            Or see full gallery →
+          </a>
+        </div>
+      )}
+
+      {/* All shown — MOBILE ONLY */}
+      {isMobile && !hasMoreMobile && filtered.length > MOBILE_INITIAL && (
+        <div className="md:hidden text-center mt-8">
+          <p className="font-condensed text-[0.6rem] tracking-[0.3em] uppercase text-white/40 font-semibold mb-3">
+            That&apos;s all {filtered.length} photos
+          </p>
+          <a
+            href="/gallery"
+            className="font-condensed text-[0.65rem] tracking-[0.25em] uppercase text-sky-400 hover:text-white transition-colors font-semibold"
+          >
+            See full gallery →
+          </a>
+        </div>
+      )}
+
       {/* Lightbox */}
       {lightbox !== null && (
         <Lightbox
@@ -140,7 +200,7 @@ export default function Gallery() {
 }
 
 /* ============================================================
-   LIGHTBOX
+   LIGHTBOX (unchanged)
    ============================================================ */
 function Lightbox({
   photos,
@@ -154,12 +214,8 @@ function Lightbox({
   onChange: (i: number) => void;
 }) {
   const photo = photos[index];
-
-  // Drag state
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-
-  // Refs to safely read values inside event handlers
   const startXRef = useRef(0);
   const startYRef = useRef(0);
   const indexRef = useRef(index);
@@ -173,7 +229,6 @@ function Lightbox({
     lengthRef.current = photos.length;
   }, [photos.length]);
 
-  // Lock body scroll
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -182,13 +237,11 @@ function Lightbox({
     };
   }, []);
 
-  // Reset drag on image change
   useEffect(() => {
     setDragX(0);
     setIsDragging(false);
   }, [index]);
 
-  // ===== Touch handlers =====
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length !== 1) return;
     startXRef.current = e.touches[0].clientX;
@@ -200,11 +253,7 @@ function Lightbox({
     if (!isDragging) return;
     const dx = e.touches[0].clientX - startXRef.current;
     const dy = e.touches[0].clientY - startYRef.current;
-
-    // Only track horizontal movement
-    if (Math.abs(dx) > Math.abs(dy)) {
-      setDragX(dx);
-    }
+    if (Math.abs(dx) > Math.abs(dy)) setDragX(dx);
   };
 
   const handleTouchEnd = () => {
@@ -220,7 +269,6 @@ function Lightbox({
     } else if (dragX > threshold) {
       onChange((idx - 1 + len) % len);
     }
-
     setDragX(0);
   };
 
@@ -239,7 +287,6 @@ function Lightbox({
         onTouchCancel={handleTouchEnd}
         style={{ touchAction: 'pan-y' }}
       >
-        {/* Image */}
         <div
           className="absolute inset-0 flex items-center justify-center"
           style={{
@@ -256,7 +303,6 @@ function Lightbox({
           />
         </div>
 
-        {/* Prev / Next — DESKTOP ONLY */}
         <button
           onClick={() => onChange((index - 1 + photos.length) % photos.length)}
           className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/60 border border-white/20 text-white text-xl hover:bg-blue-600 hover:border-blue-600 transition-all items-center justify-center z-10"
@@ -272,7 +318,6 @@ function Lightbox({
           →
         </button>
 
-        {/* Close */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 w-10 h-10 bg-black/60 border border-white/20 text-white text-lg hover:bg-blue-600 hover:border-blue-600 transition-all flex items-center justify-center z-10"
@@ -281,7 +326,6 @@ function Lightbox({
           ✕
         </button>
 
-        {/* MOBILE — swipe indicator dots */}
         <div className="md:hidden absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 pointer-events-none max-w-[60vw] overflow-hidden">
           {photos.length <= 12 ? (
             photos.map((_, i) => (
@@ -301,7 +345,6 @@ function Lightbox({
           )}
         </div>
 
-        {/* Caption */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4 md:p-6 pointer-events-none">
           <div className="font-condensed text-[0.6rem] md:text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 font-semibold mb-1">
             {photo.category}
