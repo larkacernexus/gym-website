@@ -42,9 +42,9 @@ const Navbar = () => {
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 md:w-12 md:h-12 shrink-0">
+          {/* Logo + wordmark — visible on ALL screen sizes */}
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0">
               <Image
                 src="/logo/fitlife.jpg"
                 alt="FitLife Fitness Gym"
@@ -54,11 +54,11 @@ const Navbar = () => {
                 priority
               />
             </div>
-            <div className="hidden sm:flex flex-col leading-none">
-              <span className="font-display text-xl md:text-2xl tracking-wide text-white group-hover:text-sky-400 transition-colors">
+            <div className="flex flex-col leading-none">
+              <span className="font-display text-lg sm:text-xl md:text-2xl tracking-wide text-white group-hover:text-sky-400 transition-colors">
                 FITLIFE
               </span>
-              <span className="text-[0.55rem] tracking-[0.35em] text-sky-400 font-semibold font-condensed mt-1">
+              <span className="text-[0.5rem] sm:text-[0.55rem] tracking-[0.3em] sm:tracking-[0.35em] text-sky-400 font-semibold font-condensed mt-0.5 sm:mt-1">
                 FITNESS GYM
               </span>
             </div>
