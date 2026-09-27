@@ -44,54 +44,55 @@ export default function Pricing() {
   ];
 
   return (
-    <div className="bg-black pt-32">
-      <section className="py-24 px-6 text-center">
-        <div className="luxe-label mb-6 fade-up">Membership</div>
-        <h1 className="font-display text-6xl md:text-8xl mb-8 fade-up delay-1">
+    <div className="bg-black pt-24 md:pt-32">
+      {/* ============ HERO ============ */}
+      <section className="py-12 md:py-24 px-5 sm:px-6 text-center">
+        <div className="luxe-label mb-4 md:mb-6 fade-up">Membership</div>
+        <h1 className="font-display text-4xl sm:text-6xl md:text-8xl mb-4 md:mb-8 fade-up delay-1">
           RATES & <span className="text-gradient-blue">PLANS</span>
         </h1>
-        <p className="text-white/60 max-w-2xl mx-auto text-lg fade-up delay-2">
+        <p className="text-white/60 max-w-2xl mx-auto text-base md:text-lg fade-up delay-2">
           Affordable rates. No hidden fees. Just real support for your fitness
           journey.
         </p>
         <div className="divider-blue"></div>
       </section>
 
-      <section className="py-20 px-6">
+      <section className="pb-20 md:py-20 px-5 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          {/* Main plans grid */}
+          {/* ============ PLANS GRID ============ */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-blue-600/20">
             {plans.map((plan, i) => (
               <div
                 key={i}
-                className={`p-10 md:p-12 ${
+                className={`p-6 sm:p-8 md:p-12 ${
                   plan.featured
                     ? 'bg-gradient-to-br from-blue-700 to-blue-900 md:-translate-y-3 md:shadow-[0_0_60px_-15px_rgba(37,99,235,0.6)] z-10 relative'
                     : 'bg-black'
                 }`}
               >
                 <div
-                  className={`luxe-label mb-6 ${
+                  className={`luxe-label mb-4 md:mb-6 ${
                     plan.featured ? '!text-white/80' : ''
                   }`}
                 >
                   {plan.tag}
                 </div>
 
-                <h3 className="font-display text-3xl mb-3 tracking-wide">
+                <h3 className="font-display text-2xl sm:text-3xl md:text-3xl mb-2 md:mb-3 tracking-wide">
                   {plan.name}
                 </h3>
 
-                <div className="mb-8">
-                  <div className="font-display text-5xl text-white leading-none">
+                <div className="mb-6 md:mb-8">
+                  <div className="font-display text-4xl sm:text-5xl md:text-5xl text-white leading-none">
                     {plan.price}
                   </div>
-                  <div className="font-condensed text-[0.7rem] tracking-[0.3em] uppercase text-sky-400 font-semibold mt-2">
+                  <div className="font-condensed text-[0.65rem] md:text-[0.7rem] tracking-[0.3em] uppercase text-sky-400 font-semibold mt-1 md:mt-2">
                     {plan.priceNote}
                   </div>
                 </div>
 
-                <ul className="space-y-3 mb-10">
+                <ul className="space-y-2.5 md:space-y-3 mb-8 md:mb-10">
                   {plan.features.map((f, j) => (
                     <li
                       key={j}
@@ -100,7 +101,7 @@ export default function Pricing() {
                       }`}
                     >
                       <span
-                        className={`mt-1 ${
+                        className={`mt-1 shrink-0 ${
                           plan.featured ? 'text-white/90' : 'text-blue-400'
                         }`}
                       >
@@ -125,62 +126,64 @@ export default function Pricing() {
             ))}
           </div>
 
-          {/* Compare row */}
-          <div className="mt-16 bg-neutral-950 border border-white/10 p-8 md:p-10">
-            <div className="luxe-label mb-6 text-center">Compare</div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+          {/* ============ COMPARE ROW ============ */}
+          <div className="mt-12 md:mt-16 bg-neutral-950 border border-white/10 p-6 md:p-10">
+            <div className="luxe-label mb-5 md:mb-6 text-center">Compare</div>
+            <div className="grid grid-cols-3 gap-4 md:gap-8 text-center">
               <div>
-                <div className="font-display text-2xl text-white mb-1">
+                <div className="font-display text-xl sm:text-2xl text-white mb-1">
                   {peso(PRICING.walkIn.daily)}
                 </div>
-                <div className="font-condensed text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 font-semibold">
+                <div className="font-condensed text-[0.55rem] md:text-[0.65rem] tracking-[0.25em] md:tracking-[0.3em] uppercase text-sky-400 font-semibold">
                   Walk-in Daily
                 </div>
               </div>
               <div>
-                <div className="font-display text-2xl text-white mb-1">
+                <div className="font-display text-xl sm:text-2xl text-white mb-1">
                   {peso(PRICING.walkIn.monthly)}
                 </div>
-                <div className="font-condensed text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 font-semibold">
+                <div className="font-condensed text-[0.55rem] md:text-[0.65rem] tracking-[0.25em] md:tracking-[0.3em] uppercase text-sky-400 font-semibold">
                   Walk-in Monthly
                 </div>
               </div>
               <div>
-                <div className="font-display text-2xl text-sky-400 mb-1">
+                <div className="font-display text-xl sm:text-2xl text-sky-400 mb-1">
                   {peso(PRICING.member.monthly)}
                 </div>
-                <div className="font-condensed text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 font-semibold">
+                <div className="font-condensed text-[0.55rem] md:text-[0.65rem] tracking-[0.25em] md:tracking-[0.3em] uppercase text-sky-400 font-semibold">
                   Member Monthly
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Premium section */}
+          {/* ============ PREMIUM SECTION ============ */}
           {PRICING.premium.available && (
-            <div className="mt-16 bg-gradient-to-br from-blue-700 to-blue-900 p-10 md:p-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="mt-12 md:mt-16 bg-gradient-to-br from-blue-700 to-blue-900 p-6 sm:p-8 md:p-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
                 <div>
-                  <div className="luxe-label !text-white/80 mb-4">Upgrade</div>
-                  <h3 className="font-display text-4xl md:text-5xl text-white mb-4">
+                  <div className="luxe-label !text-white/80 mb-3 md:mb-4">
+                    Upgrade
+                  </div>
+                  <h3 className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white mb-3 md:mb-4">
                     {PRICING.premium.label}
                   </h3>
-                  <div className="flex items-baseline gap-2 mb-6">
-                    <span className="font-display text-5xl text-white">
+                  <div className="flex items-baseline gap-2 mb-4 md:mb-6">
+                    <span className="font-display text-3xl sm:text-4xl md:text-5xl text-white">
                       {peso(PRICING.premium.monthly)}
                     </span>
-                    <span className="font-condensed text-xs tracking-[0.3em] uppercase text-white/70 font-semibold">
+                    <span className="font-condensed text-[0.6rem] md:text-xs tracking-[0.3em] uppercase text-white/70 font-semibold">
                       /month
                     </span>
                   </div>
                 </div>
-                <ul className="space-y-3">
+                <ul className="space-y-2.5 md:space-y-3">
                   {PRICING.premium.includes.map((f, i) => (
                     <li
                       key={i}
                       className="flex items-start gap-3 text-sm text-white/90"
                     >
-                      <span className="text-white/90 mt-1">▸</span>
+                      <span className="text-white/90 mt-1 shrink-0">▸</span>
                       {f}
                     </li>
                   ))}
@@ -189,7 +192,7 @@ export default function Pricing() {
             </div>
           )}
 
-          <p className="text-center text-white/50 mt-10 text-sm">
+          <p className="text-center text-white/50 mt-8 md:mt-10 text-xs md:text-sm">
             Exact rates may vary. Call{' '}
             <a href="tel:09954630320" className="text-blue-400 font-semibold">
               0995 463 0320
@@ -197,11 +200,13 @@ export default function Pricing() {
             for current pricing.
           </p>
 
-          {/* FAQ */}
-          <div className="mt-32 max-w-3xl mx-auto">
-            <div className="text-center mb-16">
-              <div className="luxe-label mb-4">Common Questions</div>
-              <h2 className="font-display text-5xl mb-6 tracking-wide">FAQ</h2>
+          {/* ============ FAQ ============ */}
+          <div className="mt-20 md:mt-32 max-w-3xl mx-auto">
+            <div className="text-center mb-10 md:mb-16">
+              <div className="luxe-label mb-3 md:mb-4">Common Questions</div>
+              <h2 className="font-display text-3xl sm:text-5xl mb-4 md:mb-6 tracking-wide">
+                FAQ
+              </h2>
               <div className="divider-blue"></div>
             </div>
             <div className="divide-y divide-blue-600/20">
@@ -223,11 +228,13 @@ export default function Pricing() {
                   a: 'Visit us at Quillo Building, Purok 10, Guinoyuran Rd, Valencia City, or call 0995 463 0320. Walk-ins welcome.',
                 },
               ].map((faq, i) => (
-                <div key={i} className="py-8">
-                  <h3 className="font-display text-xl mb-3 tracking-wide text-white">
+                <div key={i} className="py-5 md:py-8">
+                  <h3 className="font-display text-lg md:text-xl mb-2 md:mb-3 tracking-wide text-white">
                     {faq.q}
                   </h3>
-                  <p className="text-white/60 leading-relaxed">{faq.a}</p>
+                  <p className="text-white/60 leading-relaxed text-sm md:text-base">
+                    {faq.a}
+                  </p>
                 </div>
               ))}
             </div>

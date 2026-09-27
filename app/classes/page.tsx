@@ -13,38 +13,40 @@ export default function Classes() {
   ];
 
   return (
-    <div className="bg-black pt-32">
-      <section className="py-24 px-6 text-center">
-        <div className="luxe-label mb-6 fade-up">All In One Gym</div>
-        <h1 className="font-display text-6xl md:text-8xl mb-8 fade-up delay-1">
+    <div className="bg-black pt-24 md:pt-32">
+      {/* ============ HERO ============ */}
+      <section className="py-12 md:py-24 px-5 sm:px-6 text-center">
+        <div className="luxe-label mb-4 md:mb-6 fade-up">All In One Gym</div>
+        <h1 className="font-display text-4xl sm:text-6xl md:text-8xl mb-4 md:mb-8 fade-up delay-1">
           OUR <span className="text-gradient-blue">PROGRAMS</span>
         </h1>
-        <p className="text-white/60 max-w-2xl mx-auto text-lg fade-up delay-2">
+        <p className="text-white/60 max-w-2xl mx-auto text-base md:text-lg fade-up delay-2">
           From strength to sweat, from beginners to advanced — everything under
           one roof.
         </p>
         <div className="divider-blue"></div>
       </section>
 
-      <section className="py-20 px-6">
+      {/* ============ PROGRAMS GRID ============ */}
+      <section className="pb-20 md:py-20 px-5 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-blue-600/20">
             {programs.map((p, i) => (
               <div
                 key={i}
-                className="group bg-black p-8 hover:bg-blue-600/5 transition-colors duration-500 flex gap-6"
+                className="group bg-black p-5 sm:p-6 md:p-8 hover:bg-blue-600/5 transition-colors duration-500 flex gap-4 md:gap-6"
               >
-                <div className="font-display text-blue-500 text-3xl shrink-0">
+                <div className="font-display text-blue-500 text-2xl md:text-3xl shrink-0">
                   {p.num}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-display text-2xl mb-3 tracking-wide group-hover:text-blue-400 transition-colors">
+                  <h3 className="font-display text-lg sm:text-xl md:text-2xl mb-2 md:mb-3 tracking-wide group-hover:text-blue-400 transition-colors">
                     {p.name}
                   </h3>
-                  <p className="text-white/60 text-sm leading-relaxed mb-4">
+                  <p className="text-white/60 text-sm leading-relaxed mb-3 md:mb-4">
                     {p.desc}
                   </p>
-                  <span className="text-[0.6rem] tracking-[0.3em] uppercase text-blue-400 font-semibold">
+                  <span className="text-[0.55rem] md:text-[0.6rem] tracking-[0.3em] uppercase text-blue-400 font-semibold">
                     {p.level}
                   </span>
                 </div>
@@ -54,12 +56,12 @@ export default function Classes() {
         </div>
       </section>
 
-      {/* Hours */}
-      <section className="py-24 px-6 bg-neutral-950">
+      {/* ============ HOURS ============ */}
+      <section className="py-16 md:py-24 px-5 sm:px-6 bg-neutral-950">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="luxe-label mb-4">When To Visit</div>
-            <h2 className="font-display text-5xl md:text-6xl mb-6">
+          <div className="text-center mb-10 md:mb-16">
+            <div className="luxe-label mb-3 md:mb-4">When To Visit</div>
+            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl mb-4 md:mb-6">
               GYM <span className="text-gradient-blue">HOURS</span>
             </h2>
             <div className="divider-blue"></div>
@@ -74,14 +76,16 @@ export default function Classes() {
               { day: 'Saturday', hours: '6:00 AM – 10:00 PM' },
               { day: 'Sunday', hours: 'Closed', closed: true },
             ].map((row, i) => (
-              <div key={i} className="flex justify-between py-5">
-                <span className="font-display text-xl tracking-wide">{row.day}</span>
+              <div key={i} className="flex justify-between py-3.5 md:py-5">
+                <span className="font-display text-base sm:text-lg md:text-xl tracking-wide">
+                  {row.day}
+                </span>
                 <span
-                  className={
+                  className={`text-sm sm:text-base tracking-wide ${
                     row.closed
-                      ? 'text-red-400 font-semibold tracking-wide'
-                      : 'text-white/60 tracking-wide'
-                  }
+                      ? 'text-red-400 font-semibold'
+                      : 'text-white/60'
+                  }`}
                 >
                   {row.hours}
                 </span>

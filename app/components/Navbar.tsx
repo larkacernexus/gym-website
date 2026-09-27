@@ -2,18 +2,40 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+
+      // Toggle frosted state after 20px
+      setScrolled(currentY > 20);
+
+      // Hide when scrolling down past 100px, show when scrolling up
+      if (currentY > 100 && currentY > lastScrollY.current) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+
+      // Always show near the top
+      if (currentY < 80) {
+        setHidden(false);
+      }
+
+      lastScrollY.current = currentY;
+    };
+
     handleScroll();
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -21,6 +43,11 @@ const Navbar = () => {
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+
+  // Also close mobile menu if the navbar hides
+  useEffect(() => {
+    if (hidden && isOpen) setIsOpen(false);
+  }, [hidden, isOpen]);
 
   const links = [
     { href: '/', label: 'Home' },
@@ -35,6 +62,8 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${
+        hidden ? '-translate-y-full' : 'translate-y-0'
+      } ${
         scrolled
           ? 'bg-black/95 backdrop-blur-md py-2 border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.6)]'
           : 'bg-black/80 backdrop-blur-md py-3 border-white/5'
@@ -42,7 +71,7 @@ const Navbar = () => {
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         <div className="flex justify-between items-center">
-          {/* Logo + wordmark — visible on ALL screen sizes */}
+          {/* Logo + wordmark */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0">
               <Image

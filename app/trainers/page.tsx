@@ -9,28 +9,30 @@ export default function Trainers() {
   ];
 
   return (
-    <div className="bg-black pt-32">
-      {/* ============ HERO (centered — same as About) ============ */}
-      <section className="py-24 px-6 text-center">
-        <div className="luxe-label mb-6 fade-up">Everyday Coach · Available Daily</div>
-        <h1 className="font-display text-6xl md:text-8xl mb-8 fade-up delay-1">
+    <div className="bg-black pt-24 md:pt-32">
+      {/* ============ HERO ============ */}
+      <section className="py-12 md:py-24 px-5 sm:px-6 text-center">
+        <div className="luxe-label mb-4 md:mb-6 fade-up">
+          Everyday Coach · Available Daily
+        </div>
+        <h1 className="font-display text-4xl sm:text-6xl md:text-8xl mb-4 md:mb-8 fade-up delay-1">
           OUR <span className="text-gradient-blue">COACHES</span>
         </h1>
-        <p className="font-serif italic text-2xl text-blue-400 max-w-2xl mx-auto fade-up delay-2">
-          "Train Hard, Train Smart."
+        <p className="font-serif italic text-lg sm:text-xl md:text-2xl text-blue-400 max-w-2xl mx-auto fade-up delay-2">
+          &ldquo;Train Hard, Train Smart.&rdquo;
         </p>
         <div className="divider-blue"></div>
       </section>
 
-      {/* ============ COACH GRID (Light — America's Gym style) ============ */}
+      {/* ============ COACHES CAROUSEL ============ */}
       <Coaches />
 
-      {/* ============ PHILOSOPHY (Dark — same rhythm as About's Pillars) ============ */}
-      <section className="py-24 px-6 bg-neutral-950">
+      {/* ============ PILLARS ============ */}
+      <section className="py-16 md:py-24 px-5 sm:px-6 bg-neutral-950">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="luxe-label mb-4">Our Approach</div>
-            <h2 className="font-display text-5xl md:text-6xl mb-6">
+          <div className="text-center mb-10 md:mb-16">
+            <div className="luxe-label mb-3 md:mb-4">Our Approach</div>
+            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl mb-4 md:mb-6">
               THE FOUR <span className="text-gradient-blue">PILLARS</span>
             </h2>
             <div className="divider-blue"></div>
@@ -40,12 +42,12 @@ export default function Trainers() {
             {values.map((v, i) => (
               <div
                 key={i}
-                className="bg-black p-10 hover:bg-blue-600/5 transition-colors"
+                className="bg-black p-6 sm:p-8 md:p-10 hover:bg-blue-600/5 transition-colors"
               >
-                <div className="font-display text-blue-500 text-5xl mb-6">
+                <div className="font-display text-blue-500 text-4xl md:text-5xl mb-4 md:mb-6">
                   0{i + 1}
                 </div>
-                <h3 className="font-display text-2xl mb-3 tracking-wide">
+                <h3 className="font-display text-xl md:text-2xl mb-2 md:mb-3 tracking-wide">
                   {v.title}
                 </h3>
                 <p className="text-white/60 text-sm leading-relaxed">{v.desc}</p>
@@ -55,18 +57,18 @@ export default function Trainers() {
         </div>
       </section>
 
-      {/* ============ EVERYDAY COACH (Dark — split layout) ============ */}
-      <section className="py-24 px-6">
+      {/* ============ EVERYDAY COACH ============ */}
+      <section className="py-16 md:py-24 px-5 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="luxe-label mb-4">Always Present</div>
-            <h2 className="font-display text-5xl md:text-6xl mb-6">
+          <div className="text-center mb-10 md:mb-16">
+            <div className="luxe-label mb-3 md:mb-4">Always Present</div>
+            <h2 className="font-display text-3xl sm:text-5xl md:text-6xl mb-4 md:mb-6">
               AN EVERYDAY <span className="text-gradient-blue">COACH</span>
             </h2>
             <div className="divider-blue"></div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
             <div className="relative aspect-[4/5] overflow-hidden">
               <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -76,20 +78,23 @@ export default function Trainers() {
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-              <div className="absolute bottom-8 left-8 right-8">
-                <div className="font-display text-7xl text-blue-500">ALWAYS</div>
+              <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
+                <div className="font-display text-5xl md:text-7xl text-blue-500">
+                  ALWAYS
+                </div>
                 <div className="luxe-label mt-2">On The Floor</div>
               </div>
             </div>
             <div>
-              <div className="luxe-label mb-4">Why It Matters</div>
-              <h3 className="font-display text-4xl md:text-5xl mb-8">
-                SOMEONE IN <span className="text-gradient-blue">YOUR CORNER</span>
+              <div className="luxe-label mb-3 md:mb-4">Why It Matters</div>
+              <h3 className="font-display text-3xl sm:text-4xl md:text-5xl mb-6 md:mb-8">
+                SOMEONE IN{' '}
+                <span className="text-gradient-blue">YOUR CORNER</span>
               </h3>
-              <div className="space-y-5 text-white/70 leading-relaxed">
+              <div className="space-y-4 md:space-y-5 text-white/70 leading-relaxed text-sm md:text-base">
                 <p>
-                  At FitLife, our coaches are on the floor every day of operation
-                  to help you with form, programming, and motivation.
+                  At FitLife, our coaches are on the floor every day of
+                  operation to help you with form, programming, and motivation.
                 </p>
                 <p>
                   No matter your experience level — whether you are touching a
@@ -106,21 +111,23 @@ export default function Trainers() {
         </div>
       </section>
 
-      {/* ============ CTA (Blue — like About's bottom) ============ */}
-      <section className="py-24 px-6 bg-blue-700">
+      {/* ============ BOTTOM CTA ============ */}
+      <section className="py-16 md:py-24 px-5 sm:px-6 bg-blue-700">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="luxe-label !text-white/70 mb-4">Ready to Train?</div>
-          <h2 className="font-display text-5xl md:text-7xl text-white mb-8">
+          <div className="luxe-label !text-white/70 mb-3 md:mb-4">
+            Ready to Train?
+          </div>
+          <h2 className="font-display text-3xl sm:text-5xl md:text-7xl text-white mb-6 md:mb-8">
             BOOK YOUR FREE CONSULTATION
           </h2>
-          <p className="text-white/80 max-w-xl mx-auto mb-10">
-            Visit us at Q Square Building or call to schedule your first session
+          <p className="text-white/80 max-w-xl mx-auto mb-8 md:mb-10 text-sm md:text-base">
+            Visit us at Quillo Building or call to schedule your first session
             with a FitLife coach.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-stretch sm:items-center">
             <a
               href="tel:09954630320"
-              className="inline-block bg-white text-blue-700 font-condensed font-bold tracking-[0.15em] uppercase text-sm px-10 py-5 hover:bg-neutral-100 transition-all"
+              className="inline-block bg-white text-blue-700 font-condensed font-bold tracking-[0.15em] uppercase text-sm px-8 md:px-10 py-4 md:py-5 hover:bg-neutral-100 transition-all text-center"
             >
               Call 0995 463 0320
             </a>
@@ -128,7 +135,7 @@ export default function Trainers() {
               href="https://www.facebook.com/fitlifegymph"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border-2 border-white text-white font-condensed font-bold tracking-[0.15em] uppercase text-sm px-10 py-5 hover:bg-white hover:text-blue-700 transition-all"
+              className="inline-block border-2 border-white text-white font-condensed font-bold tracking-[0.15em] uppercase text-sm px-8 md:px-10 py-4 md:py-5 hover:bg-white hover:text-blue-700 transition-all text-center"
             >
               Message on Facebook
             </a>

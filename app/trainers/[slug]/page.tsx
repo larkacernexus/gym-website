@@ -142,14 +142,16 @@ export default async function CoachProfile({
 
   if (!coach) notFound();
 
-  // Get 3 other coaches for the "More Coaches" section
   const related = Object.entries(coaches)
     .filter(([s]) => s !== slug)
     .slice(0, 3)
     .map(([s, c]) => ({ slug: s, ...c }));
 
+  const firstName = coach.name.split(' ')[0];
+  const lastName = coach.name.split(' ')[1];
+
   return (
-    <div className="bg-black pt-32">
+    <div className="bg-black pt-24 md:pt-32">
       {/* ============ HERO ============ */}
       <section className="relative">
         <div
@@ -158,20 +160,20 @@ export default async function CoachProfile({
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/60 to-black" />
 
-        <div className="relative max-w-6xl mx-auto px-6 py-20">
+        <div className="relative max-w-6xl mx-auto px-5 sm:px-6 py-12 md:py-20">
           {/* Breadcrumb */}
-          <div className="mb-8 fade-up">
+          <div className="mb-6 md:mb-8 fade-up">
             <Link
               href="/trainers"
-              className="font-condensed text-xs tracking-[0.3em] uppercase text-sky-400 hover:text-white transition-colors"
+              className="font-condensed text-[0.65rem] md:text-xs tracking-[0.3em] uppercase text-sky-400 hover:text-white transition-colors"
             >
               ← All Coaches
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
             {/* Photo */}
-            <div className="lg:col-span-5 fade-up">
+            <div className="lg:col-span-5 fade-up max-w-xs sm:max-w-sm lg:max-w-none mx-auto lg:mx-0">
               <div className="relative aspect-[3/4] overflow-hidden border border-blue-600/30">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -184,41 +186,42 @@ export default async function CoachProfile({
             </div>
 
             {/* Info */}
-            <div className="lg:col-span-7 fade-up delay-1">
-              <div className="luxe-label mb-4">{coach.role}</div>
-              <h1 className="font-display text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-6">
-                {coach.name.split(' ')[0]}
+            <div className="lg:col-span-7 fade-up delay-1 text-center lg:text-left">
+              <div className="luxe-label mb-3 md:mb-4">{coach.role}</div>
+              <h1 className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-white mb-5 md:mb-6">
+                {firstName}
                 <br />
-                <span className="text-gradient-blue">
-                  {coach.name.split(' ')[1]}
-                </span>
+                <span className="text-gradient-blue">{lastName}</span>
               </h1>
 
-              <div className="flex flex-wrap gap-6 mb-8">
+              <div className="flex flex-wrap gap-5 md:gap-6 mb-6 md:mb-8 justify-center lg:justify-start">
                 <div>
-                  <div className="font-condensed text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 mb-1">
+                  <div className="font-condensed text-[0.6rem] md:text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 mb-1">
                     Experience
                   </div>
-                  <div className="font-display text-2xl text-white">
+                  <div className="font-display text-lg md:text-2xl text-white">
                     {coach.experience}
                   </div>
                 </div>
                 <div className="w-px bg-white/20" />
                 <div>
-                  <div className="font-condensed text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 mb-1">
+                  <div className="font-condensed text-[0.6rem] md:text-[0.65rem] tracking-[0.3em] uppercase text-sky-400 mb-1">
                     Schedule
                   </div>
-                  <div className="font-display text-2xl text-white">
+                  <div className="font-display text-lg md:text-2xl text-white">
                     {coach.schedule}
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <a href="tel:09954630320" className="btn-primary">
+              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
+                <a
+                  href="tel:09954630320"
+                  className="btn-primary text-center"
+                >
                   Book a Session
                 </a>
-                <Link href="/classes" className="btn-outline">
+                <Link href="/classes" className="btn-outline text-center">
                   See Programs
                 </Link>
               </div>
@@ -228,13 +231,13 @@ export default async function CoachProfile({
       </section>
 
       {/* ============ BIO ============ */}
-      <section className="py-20 px-6 border-t border-white/5">
+      <section className="py-12 md:py-20 px-5 sm:px-6 border-t border-white/5">
         <div className="max-w-4xl mx-auto">
-          <div className="luxe-label mb-4">About</div>
-          <h2 className="font-display text-4xl md:text-5xl text-white mb-8">
+          <div className="luxe-label mb-3 md:mb-4">About</div>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white mb-6 md:mb-8">
             THE <span className="text-gradient-blue">STORY</span>
           </h2>
-          <div className="space-y-5 text-white/70 text-lg leading-relaxed">
+          <div className="space-y-4 md:space-y-5 text-white/70 text-base md:text-lg leading-relaxed">
             {coach.bio.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
@@ -243,11 +246,11 @@ export default async function CoachProfile({
       </section>
 
       {/* ============ SPECIALTIES + CERTS ============ */}
-      <section className="py-20 px-6 bg-neutral-950 border-t border-white/5">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+      <section className="py-12 md:py-20 px-5 sm:px-6 bg-neutral-950 border-t border-white/5">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
           <div>
-            <div className="luxe-label mb-4">What They Coach</div>
-            <h3 className="font-display text-3xl text-white mb-6 tracking-wide">
+            <div className="luxe-label mb-3 md:mb-4">What They Coach</div>
+            <h3 className="font-display text-2xl md:text-3xl text-white mb-4 md:mb-6 tracking-wide">
               SPECIALTIES
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -259,14 +262,17 @@ export default async function CoachProfile({
             </div>
           </div>
           <div>
-            <div className="luxe-label mb-4">Credentials</div>
-            <h3 className="font-display text-3xl text-white mb-6 tracking-wide">
+            <div className="luxe-label mb-3 md:mb-4">Credentials</div>
+            <h3 className="font-display text-2xl md:text-3xl text-white mb-4 md:mb-6 tracking-wide">
               CERTIFICATIONS
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5 md:space-y-3">
               {coach.certifications.map((c) => (
-                <li key={c} className="flex items-start gap-3 text-white/70">
-                  <span className="text-blue-400 mt-1">▸</span>
+                <li
+                  key={c}
+                  className="flex items-start gap-3 text-white/70 text-sm md:text-base"
+                >
+                  <span className="text-blue-400 mt-1 shrink-0">▸</span>
                   {c}
                 </li>
               ))}
@@ -276,22 +282,22 @@ export default async function CoachProfile({
       </section>
 
       {/* ============ CTA ============ */}
-      <section className="py-24 px-6 bg-blue-700">
+      <section className="py-14 md:py-24 px-5 sm:px-6 bg-blue-700">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="luxe-label !text-white/70 mb-4">
-            Train With {coach.name.split(' ')[0]}
+          <div className="luxe-label !text-white/70 mb-3 md:mb-4">
+            Train With {firstName}
           </div>
-          <h2 className="font-display text-5xl md:text-7xl text-white mb-8">
+          <h2 className="font-display text-3xl sm:text-5xl md:text-7xl text-white mb-6 md:mb-8">
             BOOK A SESSION
           </h2>
-          <p className="text-white/80 max-w-xl mx-auto mb-10">
+          <p className="text-white/80 max-w-xl mx-auto mb-8 md:mb-10 text-sm md:text-base">
             First consultation is always free. Call or message us to schedule
             your session with {coach.name}.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-stretch sm:items-center">
             <a
               href="tel:09954630320"
-              className="inline-block bg-white text-blue-700 font-condensed font-bold tracking-[0.15em] uppercase text-sm px-10 py-5 hover:bg-neutral-100 transition-all"
+              className="inline-block bg-white text-blue-700 font-condensed font-bold tracking-[0.15em] uppercase text-sm px-8 md:px-10 py-4 md:py-5 hover:bg-neutral-100 transition-all text-center"
             >
               Call 0995 463 0320
             </a>
@@ -299,7 +305,7 @@ export default async function CoachProfile({
               href="https://www.facebook.com/fitlifegymph"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border-2 border-white text-white font-condensed font-bold tracking-[0.15em] uppercase text-sm px-10 py-5 hover:bg-white hover:text-blue-700 transition-all"
+              className="inline-block border-2 border-white text-white font-condensed font-bold tracking-[0.15em] uppercase text-sm px-8 md:px-10 py-4 md:py-5 hover:bg-white hover:text-blue-700 transition-all text-center"
             >
               Message on Facebook
             </a>
@@ -308,17 +314,17 @@ export default async function CoachProfile({
       </section>
 
       {/* ============ MORE COACHES ============ */}
-      <section className="py-24 px-6 border-t border-white/5">
+      <section className="py-14 md:py-24 px-5 sm:px-6 border-t border-white/5">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="luxe-label mb-4">Keep Exploring</div>
-            <h2 className="font-display text-4xl md:text-5xl text-white mb-6">
+          <div className="text-center mb-10 md:mb-16">
+            <div className="luxe-label mb-3 md:mb-4">Keep Exploring</div>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-white mb-4 md:mb-6">
               MORE <span className="text-gradient-blue">COACHES</span>
             </h2>
             <div className="divider-blue"></div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {related.map((r) => (
               <Link
                 key={r.slug}
@@ -335,11 +341,11 @@ export default async function CoachProfile({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                 </div>
-                <div className="px-6 py-5 border-t-2 border-blue-600">
-                  <div className="font-display text-xl text-white mb-2">
+                <div className="px-5 md:px-6 py-4 md:py-5 border-t-2 border-blue-600">
+                  <div className="font-display text-lg md:text-xl text-white mb-1.5 md:mb-2">
                     {r.name}
                   </div>
-                  <div className="font-condensed text-[0.7rem] tracking-[0.15em] uppercase text-sky-400 font-semibold">
+                  <div className="font-condensed text-[0.65rem] md:text-[0.7rem] tracking-[0.15em] uppercase text-sky-400 font-semibold">
                     {r.role}
                   </div>
                 </div>
@@ -347,7 +353,7 @@ export default async function CoachProfile({
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-10 md:mt-12">
             <Link href="/trainers" className="btn-outline">
               View All Coaches →
             </Link>
